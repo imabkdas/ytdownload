@@ -1,0 +1,25 @@
+
+
+spring:
+  application:
+    name: ytdownload
+
+  server:
+    port: 8080
+
+  datasource:
+    url: jdbc:postgresql://localhost:5433/ytdownload
+    username: postgres
+    password: anand5816
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database-platform : org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  servlet:
+    multipart:
+      max-file-size : 3000MB
+      max-request-size: 3000MB
