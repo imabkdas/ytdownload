@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 @Service
 public class YouTubeDownloadService {
 
-    public byte[] downloadVideo(String url, String format) throws IOException, InterruptedException {
+    public byte[] downloadVideo(String url, String format, String quality) throws IOException, InterruptedException {
         Logger logger = Logger.getLogger(YouTubeDownloadService.class.getName());
 
         // Create a temporary file for the download
@@ -16,9 +16,23 @@ public class YouTubeDownloadService {
         logger.info("Temporary file created: " + tempFile.getAbsolutePath());
 
         // Build the yt-dlp command
-        ProcessBuilder processBuilder = new ProcessBuilder(
-                "yt-dlp", url, "-o", tempFile.getAbsolutePath()
-        );
+        ProcessBuilder processBuilder;
+        if (quality.equalsIgnoreCase("HQ")) {
+            processBuilder = new ProcessBuilder(
+                    "yt-dlp", url, "-o", tempFile.getAbsolutePath()
+            );
+        } else if (quality.equalsIgnoreCase("720")) {
+            processBuilder = new ProcessBuilder(
+                    "yt-dlp", "-f", "bestvideo[height<=720]+bestaudio/best[height<=720]", "-o", tempFile.getAbsolutePath(), url
+            );
+        } else if (quality.equalsIgnoreCase("480")) {
+            processBuilder = new ProcessBuilder(
+                    "yt-dlp", "-f", "bestvideo[height<=480]+bestaudio/best[height<=480]", "-o", tempFile.getAbsolutePath(), url
+            );
+        } else {
+            throw new IllegalArgumentException("Unsupported quality: " + quality);
+        }
+
 
         logger.info("Executing yt-dlp command: " + String.join(" ", processBuilder.command()));
 
@@ -43,12 +57,12 @@ public class YouTubeDownloadService {
         // Create a new temporary file for the converted mp4 file
         File mp4File = File.createTempFile("video", ".mp4");
 
-        File mp3File = File.createTempFile("audio",".mp3");
+//        File mp3File = File.createTempFile("audio",".mp3");
 
         // Build the ffmpeg command to convert .webm to .mp4 with H.264 and AAC
         ProcessBuilder ffmpegProcessBuilder = new ProcessBuilder(
-                "ffmpeg", "-i", mergedFile.getAbsolutePath(), "-vn","-c:a", "aac", "-y", mp4File.getAbsolutePath()
-//                "ffmpeg", "-i", mergedFile.getAbsolutePath(), "-c:v", "libx264", "-c:a", "aac", "-y", mp4File.getAbsolutePath()
+//                "ffmpeg", "-i", mergedFile.getAbsolutePath(), "-vn","-c:a", "aac", "-y", mp4File.getAbsolutePath()
+                "ffmpeg", "-i", mergedFile.getAbsolutePath(), "-c:v", "libx264", "-c:a", "aac", "-y", mp4File.getAbsolutePath()
         );
 
         logger.info("Executing ffmpeg command: " + String.join(" ", ffmpegProcessBuilder.command()));

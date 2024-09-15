@@ -18,9 +18,9 @@ public class YouTubeDownloadController {
     }
 
     @PostMapping
-    public ResponseEntity<?> downloadVideo(@RequestParam String url, @RequestParam String format) {
+    public ResponseEntity<?> downloadVideo(@RequestParam String url, @RequestParam String format, @RequestParam String quality) {
         try {
-            byte[] video = youTubeDownloadService.downloadVideo(url, format);
+            byte[] video = youTubeDownloadService.downloadVideo(url, format, quality);
 
             HttpHeaders headers = new HttpHeaders();
             headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=video." + format);
