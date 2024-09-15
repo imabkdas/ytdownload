@@ -41,6 +41,7 @@ public class FormatCheckerService {
         } catch (Exception e) {
             e.printStackTrace();
             // Handle exceptions or propagate as needed
+            //
         }
 
         // Return the list of available resolutions and formats
