@@ -18,27 +18,17 @@ public class YouTubeDownloadService {
         // Build the yt-dlp command
         ProcessBuilder processBuilder = new ProcessBuilder(
                 "yt-dlp", url, "-o", tempFile.getAbsolutePath()
-//                "yt-dlp", url, "-f", "bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4", "-o", tempFile.getAbsolutePath()
         );
 
         logger.info("Executing yt-dlp command: " + String.join(" ", processBuilder.command()));
 
-        // Start the process
+        // Start the yt-dlp process
         Process process = processBuilder.start();
 
         // Capture and log the output and error streams
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-             BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                logger.info("yt-dlp output: " + line);
-            }
-            while ((line = errorReader.readLine()) != null) {
-                logger.severe("yt-dlp error: " + line);
-            }
-        }
+        captureProcessOutput(process, logger);
 
-        // Wait for the process to complete and check the exit code
+        // Wait for the yt-dlp process to complete
         int exitCode = process.waitFor();
         if (exitCode != 0) {
             throw new RuntimeException("yt-dlp failed with exit code " + exitCode);
@@ -53,9 +43,12 @@ public class YouTubeDownloadService {
         // Create a new temporary file for the converted mp4 file
         File mp4File = File.createTempFile("video", ".mp4");
 
+        File mp3File = File.createTempFile("audio",".mp3");
+
         // Build the ffmpeg command to convert .webm to .mp4 with H.264 and AAC
         ProcessBuilder ffmpegProcessBuilder = new ProcessBuilder(
-                "ffmpeg", "-i", mergedFile.getAbsolutePath(), "-c:v", "libx264", "-c:a", "aac", mp4File.getAbsolutePath()
+                "ffmpeg", "-i", mergedFile.getAbsolutePath(), "-vn","-c:a", "aac", "-y", mp4File.getAbsolutePath()
+//                "ffmpeg", "-i", mergedFile.getAbsolutePath(), "-c:v", "libx264", "-c:a", "aac", "-y", mp4File.getAbsolutePath()
         );
 
         logger.info("Executing ffmpeg command: " + String.join(" ", ffmpegProcessBuilder.command()));
@@ -64,32 +57,22 @@ public class YouTubeDownloadService {
         Process ffmpegProcess = ffmpegProcessBuilder.start();
 
         // Capture and log the output and error streams of the ffmpeg process
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(ffmpegProcess.getInputStream()));
-             BufferedReader errorReader = new BufferedReader(new InputStreamReader(ffmpegProcess.getErrorStream()))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                logger.info("ffmpeg output: " + line);
-            }
-            while ((line = errorReader.readLine()) != null) {
-                logger.severe("ffmpeg error: " + line);
-            }
-        }
+        captureProcessOutput(ffmpegProcess, logger);
 
-        // Wait for the ffmpeg process to complete and check the exit code
+        // Wait for the ffmpeg process to complete
         int ffmpegExitCode = ffmpegProcess.waitFor();
         if (ffmpegExitCode != 0) {
             throw new RuntimeException("ffmpeg failed with exit code " + ffmpegExitCode);
         }
 
-        // Read the merged file into a byte array
-        byte[] videoBytes = new byte[(int) mergedFile.length()];
-        try (FileInputStream fis = new FileInputStream(mergedFile)) {
+        // Read the converted mp4 file into a byte array
+        byte[] videoBytes = new byte[(int) mp4File.length()];
+        try (FileInputStream fis = new FileInputStream(mp4File)) {
             fis.read(videoBytes);
         }
 
         // Log the file size and delete the temporary files after use
         logger.info("MP4 File size: " + videoBytes.length + " bytes");
-//        logger.info("File size: " + videoBytes.length + " bytes");
         if (!tempFile.delete()) {
             logger.warning("Temporary file deletion failed: " + tempFile.getAbsolutePath());
         }
@@ -103,5 +86,29 @@ public class YouTubeDownloadService {
         return videoBytes;
     }
 
+    private void captureProcessOutput(Process process, Logger logger) {
+        new Thread(() -> {
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    logger.info(line);
+                }
+            } catch (IOException e) {
+                logger.severe("Error capturing process output: " + e.getMessage());
+            }
+        }).start();
 
+        new Thread(() -> {
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    logger.severe(line);
+                }
+            } catch (IOException e) {
+                logger.severe("Error capturing process error output: " + e.getMessage());
+            }
+        }).start();
+    }
 }
+
+

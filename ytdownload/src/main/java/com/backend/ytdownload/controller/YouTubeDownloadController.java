@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/download")
+@RequestMapping("/api/video/download")
 public class YouTubeDownloadController {
 
     private final YouTubeDownloadService youTubeDownloadService;
