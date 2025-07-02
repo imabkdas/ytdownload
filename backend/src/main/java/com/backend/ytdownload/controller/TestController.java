@@ -1,0 +1,25 @@
+package com.backend.ytdownload.controller;
+
+import com.backend.ytdownload.service.AudioDownloaderService;
+import com.backend.ytdownload.service.YouTubeDownloadService;
+import com.backend.ytdownload.service.YoutubeAudioDownloaderService;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+
+@RestController
+@RequestMapping("/api")
+public class TestController {
+
+    @GetMapping("/test")
+    public ResponseEntity<String> testUrl() {
+        return new ResponseEntity<>("Test endpoint is working", HttpStatus.OK);
+    }
+}
