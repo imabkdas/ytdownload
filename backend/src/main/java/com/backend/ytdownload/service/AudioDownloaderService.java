@@ -13,7 +13,7 @@ public class AudioDownloaderService {
         Logger logger = Logger.getLogger(YouTubeDownloadService.class.getName());
         long startTime = System.currentTimeMillis();
 
-        // Create a temporary file for the download
+        // Create a temporary file for the downloads
         File tempFile = File.createTempFile("audio", "." + format);
         logger.info("Temporary file created: " + tempFile.getAbsolutePath());
 
