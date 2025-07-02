@@ -15,6 +15,7 @@ spec:
       containers:
       - name: ytdownload-service
         image: imabkanand/ytdownload-service:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 8081
 

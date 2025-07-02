@@ -15,6 +15,7 @@ spec:
       containers:
       - name: ytdownload-web
         image: imabkanand/ytdownload-web:latest 
+        imagePullPolicy: Always 
         ports:
         - containerPort: 80
 ---
