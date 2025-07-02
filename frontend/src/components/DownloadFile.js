@@ -11,7 +11,7 @@ function DownloadFile() {
         setLoading(true);
         try {
             if(quality === "mp3"){
-                const response = await axios.post("http://ytdownload-service:8080/api/audio/download", null, {
+                const response = await axios.post("http://localhost:30001/api/audio/download", null, {
                     params: { url, format},
                     responseType: 'blob' // Important to handle the downloadss
                 });
@@ -25,7 +25,7 @@ function DownloadFile() {
                 link.click();
             }
             else {
-                const response = await axios.post("http://ytdownload-service:8080/api/video/download", null, {
+                const response = await axios.post("http://localhost:30001/api/video/download", null, {
                     params: { url, format, quality },
                     responseType: 'blob' // Important to handle the download
                 });
