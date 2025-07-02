@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ytdownload-service 
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ytdownload-service
+  template:
+    metadata:
+      labels:
+        app: ytdownload-service
+    spec:
+      containers:
+      - name: ytdownload-service
+        image: imabkanand/ytdownload-service:latest
+        ports:
+        - containerPort: 8081
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ytdownload-service
+spec:
+  selector:
+    app: ytdownload-service
+  ports:
+  - protocol: TCP
+    port: 8081
+    targetPort: 8081
+  type: ClusterIP  

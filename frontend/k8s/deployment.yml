@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ytdownload-web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ytdownload-web
+  template:
+    metadata:
+      labels:
+        app: ytdownload-web
+    spec:
+      containers:
+      - name: ytdownload-web
+        image: imabkanand/ytdownload-web:latest 
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  name: ytdownload-web
+spec:
+  selector:
+    app: ytdownload-web
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  type: LoadBalancer
