@@ -13,6 +13,15 @@ pipeline {
             }
         }
 
+        stage('Build Jar') {
+            steps {
+                dir('backend') {
+                    sh 'chmod +x mvnw'
+                    sh './mvnw clean package -DskipTests'
+                }
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 script {
