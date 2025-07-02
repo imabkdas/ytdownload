@@ -13,7 +13,7 @@ function DownloadFile() {
             if(quality === "mp3"){
                 const response = await axios.post("http://localhost:8080/api/audio/download", null, {
                     params: { url, format},
-                    responseType: 'blob' // Important to handle the downloads
+                    responseType: 'blob' // Important to handle the downloadss
                 });
     
                 const blob = new Blob([response.data], { type: response.headers['content-type'] });
