@@ -16,7 +16,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("${IMAGE_NAME}:${IMAGE_TAG}", '.')
+                    docker.build("${IMAGE_NAME}:${IMAGE_TAG}", "backend")
                 }
             }
         }
@@ -36,7 +36,7 @@ pipeline {
             steps {
                 script {
                     sh """
-                        sed 's|IMAGE_TAG|${IMAGE_TAG}|g' k8s/deployment.yml | \
+                        sed 's|IMAGE_TAG|${IMAGE_TAG}|g' backend/k8s/deployment.yml | \
                         sed 's|IMAGE_NAME|${IMAGE_NAME}|g' | \
                         kubectl apply -f -
                     """
