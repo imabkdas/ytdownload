@@ -8,13 +8,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class FormatCheckerService {
 
     public List<String> checkAvailableFormats(String videoUrl) {
-        Set<String> requiredResolutions = Set.of("480p", "720p", "1080p");
         Set<String> availableResolutions = new HashSet<>();
         boolean hasMp3 = false;
 

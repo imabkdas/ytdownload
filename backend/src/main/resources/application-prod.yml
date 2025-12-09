@@ -1,0 +1,28 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: ytdownload
+  servlet:
+    multipart:
+      max-file-size: 3000MB
+      max-request-size: 3000MB
+
+# CORS - Set CORS_ALLOWED_ORIGINS environment variable in ECS task definition
+# Example: https://your-frontend-domain.com,https://www.your-frontend-domain.com
+cors:
+  allowed-origins: ${CORS_ALLOWED_ORIGINS:*}
+
+logging:
+  level:
+    root: INFO
+    com.backend.ytdownload: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: /var/log/ytdownload/application.log
+    max-size: 100MB
+    max-history: 10
+

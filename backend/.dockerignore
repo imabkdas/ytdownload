@@ -1,0 +1,48 @@
+# Maven
+target/
+!target/*.jar
+.mvn/
+mvnw
+mvnw.cmd
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Documentation
+README.md
+*.md
+DEPLOYMENT_IMPROVEMENTS.md
+ECS_DEPLOYMENT_ANALYSIS.md
+
+# Logs
+*.log
+
+# Test files
+src/test/
+
+# Kubernetes configs (not needed in image)
+k8s/
+Jenkinsfile
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Misc
+.DS_Store
+Thumbs.db
+*.swp
+*.swo

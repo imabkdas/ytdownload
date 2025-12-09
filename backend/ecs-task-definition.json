@@ -1,0 +1,86 @@
+{
+  "family": "ytdownload-backend",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "512",
+  "memory": "768",
+  "containerDefinitions": [
+    {
+      "name": "ytdownload-backend",
+      "image": "imabkanand/ytdownload-backend:2.0.0",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 8080,
+          "hostPort": 8080,
+          "protocol": "tcp"
+        }
+      ],
+      "environment": [
+        {
+          "name": "SPRING_PROFILES_ACTIVE",
+          "value": "prod"
+        },
+        {
+          "name": "SERVER_PORT",
+          "value": "8080"
+        },
+        {
+          "name": "CORS_ALLOWED_ORIGINS",
+          "value": "https://yourdomain.com,https://www.yourdomain.com"
+        },
+        {
+          "name": "MULTIPART_MAX_FILE_SIZE",
+          "value": "3000MB"
+        },
+        {
+          "name": "MULTIPART_MAX_REQUEST_SIZE",
+          "value": "3000MB"
+        },
+        {
+          "name": "JAVA_TOOL_OPTIONS",
+          "value": "-Xmx512m -Xms256m"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/ytdownload-backend",
+          "awslogs-region": "YOUR_REGION",
+          "awslogs-stream-prefix": "ecs",
+          "awslogs-datetime-format": "%Y-%m-%d %H:%M:%S"
+        }
+      },
+      "healthCheck": {
+        "command": [
+          "CMD-SHELL",
+          "curl -f http://localhost:8080/health || exit 1"
+        ],
+        "interval": 30,
+        "timeout": 5,
+        "retries": 3,
+        "startPeriod": 60
+      }
+    }
+  ],
+  "executionRoleArn": "arn:aws:iam::YOUR_AWS_ACCOUNT_ID:role/ecsTaskExecutionRole",
+  "taskRoleArn": "arn:aws:iam::YOUR_AWS_ACCOUNT_ID:role/ecsTaskRole",
+  "tags": [
+    {
+      "key": "Environment",
+      "value": "Production"
+    },
+    {
+      "key": "Service",
+      "value": "ytdownload-backend"
+    },
+    {
+      "key": "Application",
+      "value": "YouTube Downloader"
+    },
+    {
+      "key": "Version",
+      "value": "2.0.0-optimized"
+    }
+  ]
+}

@@ -1,0 +1,200 @@
+.error-boundary-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+}
+
+.error-boundary-content {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    padding: 40px;
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+}
+
+.error-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.error-title {
+    color: #333;
+    font-size: 28px;
+    font-weight: 600;
+    margin: 20px 0;
+}
+
+.error-message {
+    color: #666;
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 20px 0;
+}
+
+.error-details {
+    background-color: #f5f5f5;
+    border-left: 4px solid #ff6b6b;
+    border-radius: 4px;
+    padding: 15px;
+    margin: 20px 0;
+    text-align: left;
+}
+
+.error-details-title {
+    color: #333;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0 0 10px 0;
+}
+
+.error-stack {
+    cursor: pointer;
+    user-select: none;
+}
+
+.error-stack summary {
+    color: #667eea;
+    font-weight: 500;
+    padding: 5px;
+    transition: color 0.2s ease;
+}
+
+.error-stack summary:hover {
+    color: #764ba2;
+}
+
+.error-stack[open] summary {
+    color: #764ba2;
+    margin-bottom: 10px;
+}
+
+.error-code {
+    background-color: #282c34;
+    color: #abb2bf;
+    padding: 12px;
+    border-radius: 4px;
+    overflow-x: auto;
+    font-size: 12px;
+    line-height: 1.4;
+    max-height: 300px;
+    overflow-y: auto;
+    font-family: 'Courier New', 'Courier', monospace;
+    margin: 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.error-code::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.error-code::-webkit-scrollbar-track {
+    background: #3a3f47;
+}
+
+.error-code::-webkit-scrollbar-thumb {
+    background: #666;
+    border-radius: 3px;
+}
+
+.error-code::-webkit-scrollbar-thumb:hover {
+    background: #888;
+}
+
+.error-count {
+    color: #999;
+    font-size: 12px;
+    margin: 10px 0 0 0;
+}
+
+.error-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin: 30px 0 20px 0;
+    flex-wrap: wrap;
+}
+
+.error-reset-btn,
+.error-home-btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.error-reset-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.error-reset-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.error-reset-btn:active {
+    transform: translateY(0);
+}
+
+.error-home-btn {
+    background: #f0f0f0;
+    color: #333;
+}
+
+.error-home-btn:hover {
+    background: #e0e0e0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.error-home-btn:active {
+    transform: translateY(0);
+}
+
+.error-footer {
+    color: #999;
+    font-size: 14px;
+    margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .error-boundary-content {
+        padding: 30px 20px;
+    }
+
+    .error-title {
+        font-size: 24px;
+    }
+
+    .error-message {
+        font-size: 15px;
+    }
+
+    .error-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .error-reset-btn,
+    .error-home-btn {
+        width: 100%;
+    }
+
+    .error-code {
+        font-size: 11px;
+    }
+}
